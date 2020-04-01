@@ -4,22 +4,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("api/v1/temp")
+@RequestMapping("/")
 @RestController
 public class UserController{
 
-    @GetMapping("/test1")
-    public String test1(){
-        return "test1 passed";
+    @GetMapping("/")
+    public String home() {
+        return ("<h1>Welcome</h1>");
     }
 
-    @GetMapping("/test2")
-    public String test2(){
-        return "passed test 2";
+    @GetMapping("/user")
+    public String user() {
+        return ("<h1>Welcome User</h1>");
     }
 
     @GetMapping("/admin")
-    public String admin(){
-        return "passed admin";
+    public String admin() {
+        return ("<h1>Welcome Admin</h1>");
     }
 }

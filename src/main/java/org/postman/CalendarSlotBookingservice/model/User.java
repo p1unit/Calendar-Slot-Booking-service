@@ -10,28 +10,34 @@ import java.util.Set;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
+    private long id;
+
     @Email
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
-    @NotNull
+    @Column(name = "username", nullable = false)
     private String userName;
 
     @Column(name = "name",nullable = false)
-    @NotNull
     private String name;
 
     @Column(name = "password",nullable = false)
-    @NotNull
     private String password;
 
     @Transient()
-    @NotNull
     private String confirmPassword;
 
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-
     private Set<Role> roles;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;
