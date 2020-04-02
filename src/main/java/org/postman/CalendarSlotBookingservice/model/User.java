@@ -14,7 +14,6 @@ public class User {
     @Column(name = "user_id")
     private long id;
 
-    @Email
     @Column(name = "username", nullable = false)
     private String userName;
 
@@ -27,9 +26,10 @@ public class User {
     @Transient()
     private String confirmPassword;
 
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    // TODO - role is auto set for now
+//    @ManyToMany
+//    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    private Set<Role> roles;
 
     public long getId() {
         return id;
@@ -72,11 +72,17 @@ public class User {
     }
 
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
+//    public Set<Role> getRoles() {
+//        return roles;
+//    }
+//
+//    public void setRoles(Set<Role> roles) {
+//        this.roles = roles;
+//    }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+
+    @Override
+    public String toString() {
+        return id+" "+userName+" "+name+" "+password;
     }
 }

@@ -1,6 +1,5 @@
 package org.postman.CalendarSlotBookingservice.service;
 
-import org.postman.CalendarSlotBookingservice.model.Role;
 import org.postman.CalendarSlotBookingservice.model.User;
 import org.postman.CalendarSlotBookingservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +30,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userEmail));
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : user.get().getRoles()){
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
+//        for (Role role : user.get().getRoles()){
+//            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+//        }
 
+        grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
 
-        return new org.springframework.security.core.userdetails.User(user.get().getUserName(),
-                user.get().getPassword(),grantedAuthorities);
+//        return new org.springframework.security.core.userdetails.User(user.get().getUserName(),
+//                user.get().getPassword(),grantedAuthorities);
+
+        System.out.println(user.get().getUserName()+" "+userEmail);
+
+        return new org.springframework.security.core.userdetails.User(user.get().getUserName(),user.get().getPassword(), grantedAuthorities);
     }
 
 
