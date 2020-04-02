@@ -42,8 +42,8 @@ public class UserController{
         return ("<h1>Welcome User</h1>");
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/register")
     public String admin() {
-        return ("<h1>Welcome Admin</h1>");
+        return ("registration will be done here");
     }
 }

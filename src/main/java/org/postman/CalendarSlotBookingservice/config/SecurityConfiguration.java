@@ -1,6 +1,5 @@
 package org.postman.CalendarSlotBookingservice.config;
 
-//import org.postman.CalendarSlotBookingservice.component.MyBasicAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,15 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
-//@EnableJpaRepositories(basePackageClasses = UserRepository.class)
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserDetailsService userDetailsService;
 
-//    @Autowired
-//    private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -39,7 +35,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
-//                .authenticationEntryPoint(authenticationEntryPoint);
 
     }
 
