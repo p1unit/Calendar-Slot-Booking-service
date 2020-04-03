@@ -2,15 +2,24 @@ package org.postman.CalendarSlotBookingservice.exceptions;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 public class CustomMessage {
 
     private String message;
     private HttpStatus status;
     private Object responseObject;
+    private List<String> errors;
 
     public CustomMessage(String message, HttpStatus status) {
         this.message = message;
         this.status = status;
+    }
+
+    public CustomMessage(String message, HttpStatus status, List<String> errors) {
+        this.message = message;
+        this.status = status;
+        this.errors = errors;
     }
 
     public CustomMessage(String message, HttpStatus status, Object object) {
@@ -41,5 +50,13 @@ public class CustomMessage {
 
     public void setResponseObject(Object responseObject) {
         this.responseObject = responseObject;
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 }

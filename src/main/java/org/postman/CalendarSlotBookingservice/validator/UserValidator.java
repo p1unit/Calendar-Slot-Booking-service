@@ -2,6 +2,7 @@ package org.postman.CalendarSlotBookingservice.validator;
 
 import org.postman.CalendarSlotBookingservice.model.User;
 import org.postman.CalendarSlotBookingservice.repository.UserRepository;
+import org.postman.CalendarSlotBookingservice.resource.StringResoures;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -25,24 +26,29 @@ public class UserValidator implements Validator {
     public void validate(Object o, Errors errors) {
 
         User user = (User) o;
+
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
         if (user.getUsername().length() > 32 ) {
-            errors.rejectValue("username", "Size.userForm.username");
+            errors.rejectValue("username", StringResoures.USERNAME_IS_LARGE);
+            System.out.println("here 1");
         }
 
         Optional<User> userExist = userRepository.findByUsername(user.getUsername());
 
         if (userExist.isPresent()) {
-            errors.rejectValue("username", "Duplicate.userForm.username");
+            errors.reject("username", StringResoures.DUPLICATE_USER);
+            System.out.println("here 2");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
+
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
-            errors.rejectValue("password", "Size.userForm.password");
+            errors.reject("password", StringResoures.PASSWORD_LENGTH_NOT_MATCHED);
+            System.out.println("here 3");
         }
 
         if (!user.getConfirmPassword().equals(user.getPassword())) {
-            errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
+            errors.reject("confirmPassword", StringResoures.CONFIRM_PASSWORD_ERROR);
+            System.out.println("here 4");
         }
     }
 }
