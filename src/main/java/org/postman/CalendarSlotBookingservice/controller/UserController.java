@@ -5,6 +5,7 @@ import org.postman.CalendarSlotBookingservice.repository.UserRepository;
 import org.postman.CalendarSlotBookingservice.service.UserDetailsServiceImpl;
 import org.postman.CalendarSlotBookingservice.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,7 +62,7 @@ public class UserController{
 
     @RequestMapping(path = "/register" , method = RequestMethod.POST
             ,produces = "application/json", consumes = "application/json")
-
+    @ResponseStatus(HttpStatus.CREATED)
     public String register(@Valid @RequestBody User user, BindingResult bindingResult) {
 
         userValidator.validate(user, bindingResult);

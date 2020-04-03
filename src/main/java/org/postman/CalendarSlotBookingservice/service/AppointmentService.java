@@ -1,7 +1,9 @@
 package org.postman.CalendarSlotBookingservice.service;
 
+import org.postman.CalendarSlotBookingservice.exceptions.CustomMessage;
 import org.postman.CalendarSlotBookingservice.exceptions.ResourceNotFoundException;
 import org.postman.CalendarSlotBookingservice.model.Appointment;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,7 +23,7 @@ public interface AppointmentService {
 
     Appointment updateStatus(Long appointmentId, Appointment appointment);
 
-    void deleteById(Long appointmentId);
+    ResponseEntity<CustomMessage> deleteById(Long appointmentId);
 
 }
 

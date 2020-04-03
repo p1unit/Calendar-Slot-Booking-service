@@ -32,8 +32,6 @@ public class UserValidator implements Validator {
 
         Optional<User> userExist = userRepository.findByUsername(user.getUsername());
 
-        System.out.println(userExist.isEmpty());
-
         if (userExist.isPresent()) {
             errors.rejectValue("username", "Duplicate.userForm.username");
         }
