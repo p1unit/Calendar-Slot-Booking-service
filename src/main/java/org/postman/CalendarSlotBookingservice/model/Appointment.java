@@ -26,8 +26,7 @@ public class Appointment implements Serializable {
     @Column(name = "appointment_id")
     private long id;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
+    private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
 
     private LocalDate appointmentDate;
 
@@ -35,13 +34,8 @@ public class Appointment implements Serializable {
 
     private Time appointmentEndTime;
 
-    @CreatedBy
-    private String createdBy;
-
     @Enumerated(EnumType.STRING)
     private AppointmentStatus appointmentStatus;
-
-    private String contactMail;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
@@ -57,11 +51,11 @@ public class Appointment implements Serializable {
         this.id = id;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -89,28 +83,12 @@ public class Appointment implements Serializable {
         this.appointmentEndTime = appointmentEndTime;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public AppointmentStatus getAppointmentStatus() {
         return appointmentStatus;
     }
 
     public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
         this.appointmentStatus = appointmentStatus;
-    }
-
-    public String getContactMail() {
-        return contactMail;
-    }
-
-    public void setContactMail(String contactMail) {
-        this.contactMail = contactMail;
     }
 
     public User getCreator() {
