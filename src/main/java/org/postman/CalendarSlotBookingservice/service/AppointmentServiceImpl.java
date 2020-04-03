@@ -1,7 +1,9 @@
 package org.postman.CalendarSlotBookingservice.service;
 
+import org.postman.CalendarSlotBookingservice.exceptions.ResourceNotFoundException;
 import org.postman.CalendarSlotBookingservice.model.Appointment;
 import org.postman.CalendarSlotBookingservice.repository.AppointmentRepository;
+import org.postman.CalendarSlotBookingservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
     AppointmentRepository appointmentRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    SecurityServiceImpl securityService;
 
 
     @Override
@@ -32,8 +40,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment create(Appointment appointment) {
-        return appointmentRepository.save(appointment);
+    public Appointment create(Appointment appointment) throws ResourceNotFoundException {
+
+        return userRepository.findByUsername(securityService.findLoggedInUsername()).map(user -> {
+            appointment.setCreator(user);
+            return appointmentRepository.save(appointment);
+        }).orElseThrow(() -> new ResourceNotFoundException(" User not found"));
+
+//        return appointmentRepository.save(appointment);
     }
 
     @Override

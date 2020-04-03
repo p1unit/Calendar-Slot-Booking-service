@@ -1,6 +1,7 @@
 package org.postman.CalendarSlotBookingservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedBy;
@@ -8,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -17,7 +19,7 @@ import java.time.LocalDateTime;
 //@EntityListeners(AuditingEntityListener.class)
 @Table(name = "appointment")
 
-public class Appointment {
+public class Appointment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,7 +35,7 @@ public class Appointment {
 
     private Time appointmentEndTime;
 
-//    @CreatedBy
+    @CreatedBy
     private String createdBy;
 
     @Enumerated(EnumType.STRING)
@@ -41,10 +43,11 @@ public class Appointment {
 
     private String contactMail;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name =  "user_id" ,nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+    private User creator;
 
     public long getId() {
         return id;
@@ -110,11 +113,11 @@ public class Appointment {
         this.contactMail = contactMail;
     }
 
-    public User getUser() {
-        return user;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 }

@@ -1,5 +1,7 @@
 package org.postman.CalendarSlotBookingservice.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -14,7 +16,7 @@ public class User {
     @Column(name = "user_id")
     private long id;
 
-//    @Email
+    @Email
     @Column(name = "username", nullable = false)
     private String username;
 
@@ -22,9 +24,11 @@ public class User {
     private String name;
 
     @Column(name = "password",nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Transient()
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String confirmPassword;
 
     // TODO - role is auto set for now

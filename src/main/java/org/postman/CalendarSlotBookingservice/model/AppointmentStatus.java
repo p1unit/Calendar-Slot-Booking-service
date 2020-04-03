@@ -1,5 +1,10 @@
 package org.postman.CalendarSlotBookingservice.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum AppointmentStatus {
-    Available, Booked;
+    @JsonProperty("available")
+    Available,
+    @JsonProperty("booked")
+    Booked;
 }

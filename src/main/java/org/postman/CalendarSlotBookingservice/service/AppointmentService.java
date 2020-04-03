@@ -1,5 +1,6 @@
 package org.postman.CalendarSlotBookingservice.service;
 
+import org.postman.CalendarSlotBookingservice.exceptions.ResourceNotFoundException;
 import org.postman.CalendarSlotBookingservice.model.Appointment;
 
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ public interface AppointmentService {
 
     List<Appointment> findByDateRange(LocalDate startDate, LocalDate endDate);
 
-    Appointment create(Appointment appointment);
+    Appointment create(Appointment appointment) throws ResourceNotFoundException;
 
     Appointment update(Long appointmentId, Appointment appointment);
 
