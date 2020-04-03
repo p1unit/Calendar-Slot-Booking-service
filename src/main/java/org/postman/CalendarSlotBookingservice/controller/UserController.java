@@ -59,7 +59,9 @@ public class UserController{
         return ("<h1>Welcome User</h1>");
     }
 
-    @PostMapping("/register")
+    @RequestMapping(path = "/register" , method = RequestMethod.POST
+            ,produces = "application/json", consumes = "application/json")
+
     public String register(@Valid @RequestBody User user, BindingResult bindingResult) {
 
         userValidator.validate(user, bindingResult);
