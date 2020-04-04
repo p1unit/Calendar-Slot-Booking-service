@@ -21,7 +21,7 @@ public interface AppointmentService {
 
     Appointment update(Long appointmentId, Appointment appointment);
 
-    Appointment updateStatus(Long appointmentId, Appointment appointment);
+    ResponseEntity updateStatus(Long appointmentId, Appointment appointment);
 
     ResponseEntity<CustomMessage> deleteById(Long appointmentId);
 

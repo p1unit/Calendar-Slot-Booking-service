@@ -5,6 +5,7 @@ import org.postman.CalendarSlotBookingservice.exceptions.CustomMessage;
 import org.postman.CalendarSlotBookingservice.exceptions.ResourceNotFoundException;
 import org.postman.CalendarSlotBookingservice.model.Appointment;
 import org.postman.CalendarSlotBookingservice.model.AppointmentStatus;
+import org.postman.CalendarSlotBookingservice.model.User;
 import org.postman.CalendarSlotBookingservice.repository.AppointmentRepository;
 import org.postman.CalendarSlotBookingservice.repository.UserRepository;
 import org.postman.CalendarSlotBookingservice.resource.StringResoures;
@@ -68,7 +69,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment updateStatus(Long appointmentId, Appointment appointment) {
+    public ResponseEntity updateStatus(Long appointmentId, Appointment appointment) {
 
         // ToDo - manage it
 
@@ -76,14 +77,51 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         if(appointmentList.isPresent()){
 
-            if(appointmentList.get().getCreator().getUsername().equals(securityService.findLoggedInUsername())
-                    || appointment.getAppointmentStatus() != appointment.getAppointmentStatus()){
-                appointmentList.get().setAppointmentStatus(appointment.getAppointmentStatus());
+            System.out.println(appointmentList.get().getAppointmentStatus()+" "+appointment.getAppointmentStatus());
+
+            String loggedInUsername = securityService.findLoggedInUsername();
+
+
+            if(appointmentList.get().getCreator().getUsername().equals( loggedInUsername )
+                    && appointment.getAppointmentStatus() == AppointmentStatus.Booked){
+
+                return ResponseEntity.status(HttpStatus.OK).body
+                        (new CustomMessage(StringResoures.APPOINTMENT_USER_SAME,HttpStatus.OK));
             }
-            return appointmentRepository.save(appointmentList.get());
+
+            if( appointmentList.get().getAppointmentStatus() == AppointmentStatus.Booked &&
+                    !appointmentList.get().getBookerEmail().equals(loggedInUsername) &&
+                    !appointmentList.get().getCreator().getUsername().equals(loggedInUsername) ){
+
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body
+                        (new CustomMessage(StringResoures.PERMISSION_DENIED,HttpStatus.UNAUTHORIZED));
+
+            }
+
+            if(appointmentList.get().getAppointmentStatus() == appointment.getAppointmentStatus()){
+                return ResponseEntity.status(HttpStatus.OK).body
+                        (new CustomMessage(StringResoures.APPOINTMENT_IS_SAME,HttpStatus.OK));
+            }
+
+            appointmentList.get().setAppointmentStatus(appointment.getAppointmentStatus());
+
+            Optional<org.postman.CalendarSlotBookingservice.model.User> loggeinUser =
+                    userRepository.findByUsername(loggedInUsername);
+
+            if(appointmentList.get().getAppointmentStatus()==AppointmentStatus.Available) {
+                appointmentList.get().setBookedBy(null);
+                appointmentList.get().setBookerEmail(null);
+            }else {
+                appointmentList.get().setBookedBy(loggeinUser.get().getName());
+                appointmentList.get().setBookerEmail(loggeinUser.get().getUsername());
+            }
+            Appointment savedValue = appointmentRepository.save(appointmentList.get());
+
+            return ResponseEntity.status(HttpStatus.OK).body(savedValue);
         }
 
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body
+                (new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT,HttpStatus.NOT_FOUND));
     }
 
     @Override
