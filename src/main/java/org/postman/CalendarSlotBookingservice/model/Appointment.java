@@ -2,6 +2,7 @@ package org.postman.CalendarSlotBookingservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedBy;
@@ -9,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 @Entity
 //@EntityListeners(AuditingEntityListener.class)
 @Table(name = "appointment")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 
 public class Appointment implements Serializable {
 
@@ -42,6 +45,11 @@ public class Appointment implements Serializable {
     @JoinColumn(name =  "user_id" ,nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User creator;
+
+    private String bookedBy;
+
+    @Email
+    private String bookerEmail;
 
     public long getId() {
         return id;
@@ -97,5 +105,21 @@ public class Appointment implements Serializable {
 
     public void setCreator(User creator) {
         this.creator = creator;
+    }
+
+    public String getBookedBy() {
+        return bookedBy;
+    }
+
+    public void setBookedBy(String bookedBy) {
+        this.bookedBy = bookedBy;
+    }
+
+    public String getBookerEmail() {
+        return bookerEmail;
+    }
+
+    public void setBookerEmail(String bookerEmail) {
+        this.bookerEmail = bookerEmail;
     }
 }

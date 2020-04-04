@@ -30,25 +30,22 @@ public class UserValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
         if (user.getUsername().length() > 32 ) {
             errors.rejectValue("username", StringResoures.USERNAME_IS_LARGE);
-            System.out.println("here 1");
+
         }
 
         Optional<User> userExist = userRepository.findByUsername(user.getUsername());
 
         if (userExist.isPresent()) {
             errors.reject("username", StringResoures.DUPLICATE_USER);
-            System.out.println("here 2");
         }
 
 
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
             errors.reject("password", StringResoures.PASSWORD_LENGTH_NOT_MATCHED);
-            System.out.println("here 3");
         }
 
         if (!user.getConfirmPassword().equals(user.getPassword())) {
             errors.reject("confirmPassword", StringResoures.CONFIRM_PASSWORD_ERROR);
-            System.out.println("here 4");
         }
     }
 }

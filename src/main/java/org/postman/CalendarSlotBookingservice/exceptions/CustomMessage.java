@@ -1,9 +1,11 @@
 package org.postman.CalendarSlotBookingservice.exceptions;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomMessage {
 
     private String message;

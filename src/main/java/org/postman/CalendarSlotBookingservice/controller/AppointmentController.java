@@ -54,7 +54,7 @@ public class AppointmentController {
     }
 
     @PatchMapping(path = "/{appointmentId}")
-    public Appointment updateStatus(@PathVariable Long appointmentId, @RequestBody Appointment appointment) {
+    public ResponseEntity updateStatus(@PathVariable Long appointmentId, @RequestBody Appointment appointment) {
         return appointmentService.updateStatus(appointmentId, appointment);
     }
 
