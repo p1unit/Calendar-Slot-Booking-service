@@ -13,17 +13,18 @@ public interface AppointmentService {
 
     Optional<Appointment> findById(Long appointmentId);
 
-    List<Appointment> findAll();
-
-    List<Appointment> findByDateRange(LocalDate startDate, LocalDate endDate);
+    ResponseEntity findAll();
 
     Appointment create(Appointment appointment) throws ResourceNotFoundException;
 
     Appointment update(Long appointmentId, Appointment appointment);
 
-    ResponseEntity updateStatus(Long appointmentId, Appointment appointment);
+    ResponseEntity deleteById(Long appointmentId);
 
-    ResponseEntity<CustomMessage> deleteById(Long appointmentId);
+    ResponseEntity findByDateRangeWithStatus(LocalDate startDate, LocalDate endDate,String status);
 
+    ResponseEntity bookAppointment(Long appointmentId);
+
+    ResponseEntity cancelAppointment(Long appointmentId);
 }
 

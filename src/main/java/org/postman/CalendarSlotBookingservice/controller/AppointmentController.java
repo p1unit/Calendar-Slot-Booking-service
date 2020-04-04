@@ -1,5 +1,6 @@
 package org.postman.CalendarSlotBookingservice.controller;
 
+import com.sun.istack.Nullable;
 import org.apache.coyote.Response;
 import org.postman.CalendarSlotBookingservice.exceptions.CustomMessage;
 import org.postman.CalendarSlotBookingservice.exceptions.ResourceNotFoundException;
@@ -26,7 +27,7 @@ public class AppointmentController {
     AppointmentService appointmentService;
 
     @RequestMapping(path = "/all", method = RequestMethod.GET)
-    List<Appointment> findAll() {
+    ResponseEntity findAll() {
 
         return appointmentService.findAll();
     }
@@ -43,23 +44,32 @@ public class AppointmentController {
     }
 
     @GetMapping(path = "")
-    public List<Appointment> findByDateRangeSortedByPrice(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("startDate") LocalDate startDate,
-                                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") LocalDate endDate) {
-        return appointmentService.findByDateRange(startDate, endDate);
+    public ResponseEntity findByDateRange(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("startDate") LocalDate startDate,
+                                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") LocalDate endDate,
+                                            @Nullable @RequestParam("status") String status) {
+
+        return appointmentService.findByDateRangeWithStatus(startDate, endDate,status);
     }
+
+
 
     @PutMapping(path = "/{appointmentId}")
     public Appointment update(@PathVariable Long appointmentId, @RequestBody Appointment appointment) {
         return appointmentService.update(appointmentId, appointment);
     }
 
-    @PatchMapping(path = "/{appointmentId}")
-    public ResponseEntity updateStatus(@PathVariable Long appointmentId, @RequestBody Appointment appointment) {
-        return appointmentService.updateStatus(appointmentId, appointment);
+    @PatchMapping(path = "/book/{appointmentId}")
+    public ResponseEntity bookAppointment(@PathVariable Long appointmentId) {
+        return appointmentService.bookAppointment(appointmentId);
+    }
+
+    @PatchMapping(path = "/cancel/{appointmentId}")
+    public ResponseEntity cancelAppointment(@PathVariable Long appointmentId) {
+        return appointmentService.cancelAppointment(appointmentId);
     }
 
     @DeleteMapping( path = "/{appointmentId}")
-    public ResponseEntity<CustomMessage> deleteById(@PathVariable Long appointmentId) {
+    public ResponseEntity deleteById(@PathVariable Long appointmentId) {
 
         return appointmentService.deleteById(appointmentId);
     }

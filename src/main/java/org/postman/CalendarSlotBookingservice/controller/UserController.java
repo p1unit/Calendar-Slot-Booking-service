@@ -2,8 +2,10 @@ package org.postman.CalendarSlotBookingservice.controller;
 
 import org.postman.CalendarSlotBookingservice.exceptions.CustomMessage;
 import org.postman.CalendarSlotBookingservice.model.User;
+import org.postman.CalendarSlotBookingservice.repository.SecurityService;
 import org.postman.CalendarSlotBookingservice.repository.UserRepository;
 import org.postman.CalendarSlotBookingservice.resource.StringResoures;
+import org.postman.CalendarSlotBookingservice.service.SecurityServiceImpl;
 import org.postman.CalendarSlotBookingservice.service.UserDetailsServiceImpl;
 import org.postman.CalendarSlotBookingservice.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/")
 @RestController
@@ -36,34 +39,22 @@ public class UserController{
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    SecurityServiceImpl securityService;
+
 //    @Autowired
 //    SecurityServiceImpl securityService;
 
     @GetMapping("/")
-    public String home() {
+    public CustomMessage home() {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-
-        Collection<SimpleGrantedAuthority> authorities =
-                (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-
-        System.out.println(username+" "+authorities.iterator().next().getAuthority());
-
-        return ("<h1>Welcome</h1>");
+        return new CustomMessage("Welcome in the Appointment booking system",HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/user")
-    public String user() {
-//        return "hi";
-        return ("<h1>Welcome User</h1>");
+    public Optional<User> user() {
+        return userRepository.findByUsername(securityService.findLoggedInUsername());
     }
 
     @PostMapping(path = "/register")

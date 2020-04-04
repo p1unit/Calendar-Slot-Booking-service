@@ -2,6 +2,7 @@ package org.postman.CalendarSlotBookingservice.resource;
 
 public class StringResoures {
 
+    public static final String OPERATION_SUCCESSFUL = "Successful";
     public static final String DELETION_SUCCESSFUL = "Appointment successfully Deleted";
     public static final String DELETION_FAILED = "Appointment deletion failed";
     public static final String APPOINTMENT_NOT_PRESENT = "Appointment Not Present";
@@ -13,5 +14,10 @@ public class StringResoures {
     public static final String USERNAME_IS_LARGE = "Username should be less than 32 Characters";
     public static final String APPOINTMENT_USER_SAME = "You can not book your own appointment";
     public static final String APPOINTMENT_IS_SAME = "Appointment is already in same state";
+    public static final String INVALID_STATUS = "Invalid appointment status";
+    public static final String APPOINTMENT_BOOKED = "Appointment booked";
+    public static final String APPOINTMENT_CANCELED = "Appointment canceled";
+    public static final String PAST_APPOINTMENT = "You can not change past appointment";
+
 
 }

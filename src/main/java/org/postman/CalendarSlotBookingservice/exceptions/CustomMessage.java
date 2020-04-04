@@ -10,8 +10,11 @@ public class CustomMessage {
 
     private String message;
     private HttpStatus status;
-    private Object responseObject;
+    private Object response;
     private List<String> errors;
+
+    public CustomMessage() {
+    }
 
     public CustomMessage(String message, HttpStatus status) {
         this.message = message;
@@ -27,7 +30,7 @@ public class CustomMessage {
     public CustomMessage(String message, HttpStatus status, Object object) {
         this.message = message;
         this.status = status;
-        this.responseObject = object;
+        this.response = object;
     }
 
     public String getMessage() {
@@ -46,12 +49,12 @@ public class CustomMessage {
         this.status = status;
     }
 
-    public Object getResponseObject() {
-        return responseObject;
+    public Object getResponse() {
+        return response;
     }
 
-    public void setResponseObject(Object responseObject) {
-        this.responseObject = responseObject;
+    public void setResponse(Object response) {
+        this.response = response;
     }
 
     public List<String> getErrors() {
