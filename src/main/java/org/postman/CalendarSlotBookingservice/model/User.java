@@ -17,7 +17,7 @@ public class User {
     private long id;
 
     @Email
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false,unique = true)
     private String username;
 
     @Column(name = "name",nullable = false)

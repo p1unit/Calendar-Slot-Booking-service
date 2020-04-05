@@ -11,19 +11,30 @@ import java.util.Optional;
 
 public interface AppointmentService {
 
-    Optional<Appointment> findById(Long appointmentId);
+    ResponseEntity findById(Long appointmentId);
 
-    List<Appointment> findAll();
+    ResponseEntity findAll();
 
-    List<Appointment> findByDateRange(LocalDate startDate, LocalDate endDate);
+    ResponseEntity create(Appointment appointment) throws ResourceNotFoundException;
 
-    Appointment create(Appointment appointment) throws ResourceNotFoundException;
+    ResponseEntity update(Long appointmentId, Appointment appointment);
 
-    Appointment update(Long appointmentId, Appointment appointment);
+    ResponseEntity deleteById(Long appointmentId);
 
-    ResponseEntity updateStatus(Long appointmentId, Appointment appointment);
+    ResponseEntity findByDateRangeWithStatus(LocalDate startDate, LocalDate endDate,String status);
 
-    ResponseEntity<CustomMessage> deleteById(Long appointmentId);
+    ResponseEntity bookAppointment(Long appointmentId);
 
+    ResponseEntity cancelAppointment(Long appointmentId);
+
+    ResponseEntity findAllByAppointmentDateAfter(LocalDate startDate, String status);
+
+    ResponseEntity findAllByAppointmentDateBefore(LocalDate startDate, String status);
+
+    ResponseEntity findByUserAndDateRangeWithStatus(LocalDate startDate, LocalDate endDate, Long userId, String status);
+
+    ResponseEntity findAllByUserAndAppointmentDateAfter(LocalDate date, Long userId, String status);
+
+    ResponseEntity findAllByUserAndAppointmentDateBefore(LocalDate date, Long userId, String status);
 }
 
