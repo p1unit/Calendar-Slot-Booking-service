@@ -18,8 +18,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.persistence.Entity;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -93,5 +97,15 @@ public class UserController{
         User createdUser = userRepository.save(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new CustomMessage(StringResoures.USER_CREATED,HttpStatus.CREATED,createdUser));
+    }
+
+    @GetMapping(path = EndPoints.LOG_OUT)
+    public ResponseEntity logout(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+        session.invalidate();
+        SecurityContextHolder.clearContext();
+
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomMessage(StringResoures.USER_LOGGED_OUT,HttpStatus.OK));
     }
 }

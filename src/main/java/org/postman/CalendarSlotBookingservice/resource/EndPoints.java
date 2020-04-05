@@ -10,6 +10,7 @@ public class EndPoints {
     public static final String CURRENT_USER = "/currentUser";
     public static final String REGISTER_USER = "/register";
     public static final String FIND_USER = "/{userId}";
+    public static final String LOG_OUT = "/logout";
 
     // EndPoints appointment
     public static final String APPOINTMENT_BASE = "/appointment";
@@ -26,5 +27,4 @@ public class EndPoints {
     public static final String APPOINTMENT_BY_USER_BETWEEN_DATES = "/all/betweenDate/{userId}";
     public static final String APPOINTMENT_BY_USER_BEFORE_DATES = "/all/beforeDate/{userId}";
     public static final String APPOINTMENT_BY_AFTER_DATES = "/all/afterDate/{userId}";
-
 }

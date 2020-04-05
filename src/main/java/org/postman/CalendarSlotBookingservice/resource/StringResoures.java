@@ -5,6 +5,7 @@ public class StringResoures {
     public static final String OPERATION_SUCCESSFUL = "Successful";
     public static final String DELETION_SUCCESSFUL = "Appointment successfully Deleted";
     public static final String APPOINTMENT_CREATED = "Appointment created";
+    public static final String USER_LOGGED_OUT = "User logged out successfully";
     public static final String DELETION_FAILED = "Appointment deletion failed";
     public static final String APPOINTMENT_NOT_PRESENT = "Appointment Not Present";
     public static final String PERMISSION_DENIED  = "Permission Denied or you can not edit this value";
@@ -26,6 +27,4 @@ public class StringResoures {
     public static final String USER_NOT_FOUND = "User not found";
     public static final String SLOT_TIME_FULL = "Slot timing is already full";
     public static final String START_TIME_GREATER = "StartTime should be less than EndTime";
-
-
 }
