@@ -11,13 +11,13 @@ import java.util.Optional;
 
 public interface AppointmentService {
 
-    Optional<Appointment> findById(Long appointmentId);
+    ResponseEntity findById(Long appointmentId);
 
     ResponseEntity findAll();
 
     Appointment create(Appointment appointment) throws ResourceNotFoundException;
 
-    Appointment update(Long appointmentId, Appointment appointment);
+    ResponseEntity update(Long appointmentId, Appointment appointment);
 
     ResponseEntity deleteById(Long appointmentId);
 
@@ -26,5 +26,9 @@ public interface AppointmentService {
     ResponseEntity bookAppointment(Long appointmentId);
 
     ResponseEntity cancelAppointment(Long appointmentId);
+
+    ResponseEntity findAllByAppointmentDateAfter(LocalDate startDate, String status);
+
+    ResponseEntity findAllByAppointmentDateBefore(LocalDate startDate, String status);
 }
 

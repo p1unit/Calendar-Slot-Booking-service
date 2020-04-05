@@ -12,7 +12,16 @@ import java.util.Optional;
 
 public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
 
-    List<Appointment> findAllByAppointmentDateAfter(LocalDate startDate);
+
+    List<Appointment> findAllByAppointmentDateAfterAndAppointmentStatus(@Param("date") LocalDate date,
+                                                                        @Param("appointmentStatus")AppointmentStatus appointmentStatus);
+
+    List<Appointment> findAllByAppointmentDateAfter(@Param("date") LocalDate date);
+
+    List<Appointment> findAllByAppointmentDateBeforeAndAppointmentStatus(@Param("date") LocalDate date,
+                                                                         @Param("appointmentStatus")AppointmentStatus appointmentStatus);
+
+    List<Appointment> findAllByAppointmentDateBefore(@Param("date") LocalDate date);
 
 //    @Query("SELECT a FROM Appointment a WHERE a.appointmentDate >= :startDate AND a.appointmentDate <= :endDate")
     List<Appointment> findAllByAppointmentDateBetween(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);

@@ -10,6 +10,7 @@ import org.postman.CalendarSlotBookingservice.repository.AppointmentRepository;
 import org.postman.CalendarSlotBookingservice.repository.UserRepository;
 import org.postman.CalendarSlotBookingservice.resource.StringResoures;
 import org.postman.CalendarSlotBookingservice.validator.AppointmentStatusUpdater;
+import org.postman.CalendarSlotBookingservice.validator.AppointmentValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,19 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     AppointmentStatusUpdater appointmentStatusUpdater;
 
+    @Autowired
+    AppointmentValidator appointmentValidator;
+
 
     @Override
-    public Optional<Appointment> findById(Long appointmentId) {
-        return appointmentRepository.findById(appointmentId);
+    public ResponseEntity findById(Long appointmentId) {
+        Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
+
+        if(appointment.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomMessage(StringResoures.NOT_PRESENT,HttpStatus.NOT_FOUND));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,appointment.get()));
     }
 
     @Override
@@ -66,8 +76,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     // ToDo - updation remaining
     @Override
-    public Appointment update(Long appointmentId, Appointment appointment) {
-        return appointmentRepository.save(appointment);
+    public ResponseEntity update(Long appointmentId, Appointment appointment) {
+        return appointmentValidator.validateAndUpdateAppointment(appointmentId,appointment);
     }
 
 
@@ -89,8 +99,8 @@ public class AppointmentServiceImpl implements AppointmentService {
             return ResponseEntity.badRequest().body(customMessage);
         }
 
-        customMessage = new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT, HttpStatus.BAD_REQUEST);
-        return ResponseEntity.badRequest().body(customMessage);
+        customMessage = new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT, HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
     }
 
     @Override
@@ -127,5 +137,51 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public ResponseEntity cancelAppointment(Long appointmentId) {
         return appointmentStatusUpdater.validateAndCancel(appointmentId);
+    }
+
+    @Override
+    public ResponseEntity findAllByAppointmentDateAfter(LocalDate startDate, String status) {
+
+        List<Appointment> appointments;
+
+        switch (status) {
+            case "booked":
+                appointments = appointmentRepository.findAllByAppointmentDateAfterAndAppointmentStatus(startDate,AppointmentStatus.Booked);
+                break;
+            case "available":
+                appointments = appointmentRepository.findAllByAppointmentDateAfterAndAppointmentStatus(startDate,AppointmentStatus.Available);
+                break;
+            case "all":
+                appointments = appointmentRepository.findAllByAppointmentDateAfter(startDate);
+                break;
+            default:
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage(StringResoures.INVALID_STATUS,HttpStatus.BAD_REQUEST));
+        }
+
+        CustomMessage customMessage=new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,appointments);
+        return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
+    }
+
+    @Override
+    public ResponseEntity findAllByAppointmentDateBefore(LocalDate startDate, String status) {
+
+        List<Appointment> appointments;
+
+        switch (status) {
+            case "booked":
+                appointments = appointmentRepository.findAllByAppointmentDateBeforeAndAppointmentStatus(startDate,AppointmentStatus.Booked);
+                break;
+            case "available":
+                appointments = appointmentRepository.findAllByAppointmentDateBeforeAndAppointmentStatus(startDate,AppointmentStatus.Available);
+                break;
+            case "all":
+                appointments = appointmentRepository.findAllByAppointmentDateBefore(startDate);
+                break;
+            default:
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage(StringResoures.INVALID_STATUS,HttpStatus.BAD_REQUEST));
+        }
+
+        CustomMessage customMessage=new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,appointments);
+        return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
     }
 }

@@ -31,10 +31,13 @@ public class Appointment implements Serializable {
 
     private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
 
+    @Column(nullable = false)
     private LocalDate appointmentDate;
 
+    @Column(nullable = false)
     private Time appointmentStartTime;
 
+    @Column(nullable = false)
     private Time appointmentEndTime;
 
     @Enumerated(EnumType.STRING)
