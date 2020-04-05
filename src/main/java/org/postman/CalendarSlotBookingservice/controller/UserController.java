@@ -4,6 +4,7 @@ import org.postman.CalendarSlotBookingservice.exceptions.CustomMessage;
 import org.postman.CalendarSlotBookingservice.model.User;
 import org.postman.CalendarSlotBookingservice.repository.SecurityService;
 import org.postman.CalendarSlotBookingservice.repository.UserRepository;
+import org.postman.CalendarSlotBookingservice.resource.EndPoints;
 import org.postman.CalendarSlotBookingservice.resource.StringResoures;
 import org.postman.CalendarSlotBookingservice.service.SecurityServiceImpl;
 import org.postman.CalendarSlotBookingservice.service.UserDetailsServiceImpl;
@@ -26,7 +27,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-@RequestMapping("/")
+@RequestMapping(EndPoints.API_VERSION+EndPoints.USER_BASE)
 @RestController
 public class UserController{
 
@@ -45,20 +46,36 @@ public class UserController{
 //    @Autowired
 //    SecurityServiceImpl securityService;
 
-    @GetMapping("/")
+    @GetMapping(path = EndPoints.USER_HOME)
     public CustomMessage home() {
 
         return new CustomMessage("Welcome in the Appointment booking system",HttpStatus.OK);
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/user")
-    public Optional<User> user() {
-        return userRepository.findByUsername(securityService.findLoggedInUsername());
+    @GetMapping(path = EndPoints.CURRENT_USER)
+    public ResponseEntity user() {
+
+        Optional<User> user = userRepository.findByUsername(securityService.findLoggedInUsername());
+        if(user.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomMessage(StringResoures.USER_NOT_FOUND,HttpStatus.NOT_FOUND));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,user.get()));
     }
 
-    @PostMapping(path = "/register")
+    @GetMapping(path = EndPoints.FIND_USER)
+    public ResponseEntity findByUserID(@PathVariable("userId") Long userId) {
+         Optional<User> user = userRepository.findById(userId);
+         if(user.isEmpty()){
+             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomMessage(StringResoures.USER_NOT_FOUND,HttpStatus.NOT_FOUND));
+         }
 
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,user.get()));
+    }
+
+
+
+    @PostMapping(path = EndPoints.REGISTER_USER)
     public ResponseEntity<CustomMessage> register(@Valid @RequestBody User user, BindingResult bindingResult) {
 
         userValidator.validate(user, bindingResult);

@@ -2,8 +2,17 @@ package org.postman.CalendarSlotBookingservice.resource;
 
 public class EndPoints {
 
-    // EndPoints
-    public static final String APPOINTMENT_BASE = "api/v1/appointment";
+    public static final String API_VERSION = "api/v1";
+
+    // EndPoints user
+    public static final String USER_BASE = "/user";
+    public static final String USER_HOME = "/";
+    public static final String CURRENT_USER = "/currentUser";
+    public static final String REGISTER_USER = "/register";
+    public static final String FIND_USER = "/{userId}";
+
+    // EndPoints appointment
+    public static final String APPOINTMENT_BASE = "/appointment";
     public static final String APPOINTMENT_ALL = "/all";
     public static final String APPOINTMENT_CREATE = "/create";
     public static final String APPOINTMENT_BY_ID = "/{appointmentId}";

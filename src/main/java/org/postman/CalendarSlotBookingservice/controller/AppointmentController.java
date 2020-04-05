@@ -22,7 +22,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping(EndPoints.APPOINTMENT_BASE)
+@RequestMapping(EndPoints.API_VERSION+EndPoints.APPOINTMENT_BASE)
 public class AppointmentController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class AppointmentController {
 
     @PostMapping(path = EndPoints.APPOINTMENT_CREATE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Appointment create(@Valid @RequestBody Appointment appointment) throws ResourceNotFoundException {
+    public ResponseEntity create(@Valid @RequestBody Appointment appointment) throws ResourceNotFoundException {
         return appointmentService.create(appointment);
     }
 

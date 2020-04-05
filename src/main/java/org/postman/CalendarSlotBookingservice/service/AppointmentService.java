@@ -15,7 +15,7 @@ public interface AppointmentService {
 
     ResponseEntity findAll();
 
-    Appointment create(Appointment appointment) throws ResourceNotFoundException;
+    ResponseEntity create(Appointment appointment) throws ResourceNotFoundException;
 
     ResponseEntity update(Long appointmentId, Appointment appointment);
 

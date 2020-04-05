@@ -63,18 +63,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment create(Appointment appointment) throws ResourceNotFoundException {
+    public ResponseEntity create(Appointment appointment)  {
 
-        return userRepository.findByUsername(securityService.findLoggedInUsername()).map(user -> {
-            appointment.setCreator(user);
-            appointment.setAppointmentStatus(AppointmentStatus.Available);
-            return appointmentRepository.save(appointment);
-        }).orElseThrow(() -> new ResourceNotFoundException(" User not found"));
-
-//        return appointmentRepository.save(appointment);
+        return appointmentValidator.validateAndCreate(appointment);
     }
 
-    // ToDo - updation remaining
+
     @Override
     public ResponseEntity update(Long appointmentId, Appointment appointment) {
         return appointmentValidator.validateAndUpdateAppointment(appointmentId,appointment);

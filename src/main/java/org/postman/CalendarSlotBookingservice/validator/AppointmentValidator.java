@@ -1,7 +1,10 @@
 package org.postman.CalendarSlotBookingservice.validator;
 
 import org.postman.CalendarSlotBookingservice.exceptions.CustomMessage;
+import org.postman.CalendarSlotBookingservice.exceptions.ResourceNotFoundException;
 import org.postman.CalendarSlotBookingservice.model.Appointment;
+import org.postman.CalendarSlotBookingservice.model.AppointmentStatus;
+import org.postman.CalendarSlotBookingservice.model.User;
 import org.postman.CalendarSlotBookingservice.repository.AppointmentRepository;
 import org.postman.CalendarSlotBookingservice.repository.UserRepository;
 import org.postman.CalendarSlotBookingservice.resource.StringResoures;
@@ -12,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -25,6 +29,40 @@ public class AppointmentValidator {
 
     @Autowired
     UserRepository userRepository;
+
+    public ResponseEntity validateAndCreate(Appointment appointment)  {
+
+        CustomMessage customMessage;
+        User creator =  userRepository.findByUsername(securityService.findLoggedInUsername()).get();
+
+        long alreadyExisting =  appointmentRepository.findByOverlappingSlotCount(
+                appointment.getAppointmentDate(),appointment.getAppointmentStartTime(),appointment.getAppointmentEndTime());
+
+
+        if(appointment.getAppointmentDate().isBefore(LocalDate.now())){
+
+            customMessage = new CustomMessage(StringResoures.DATE_IS_IN_PAST,HttpStatus.OK);
+
+        }else if( appointment.getAppointmentStartTime().after(appointment.getAppointmentEndTime()) ||
+                appointment.getAppointmentStartTime().equals(appointment.getAppointmentEndTime()) ){
+
+            customMessage = new CustomMessage(StringResoures.START_TIME_GREATER,HttpStatus.OK);
+
+        }else if(alreadyExisting > 0){
+
+            customMessage = new CustomMessage(StringResoures.SLOT_TIME_FULL,HttpStatus.OK);
+
+        }else {
+
+            appointment.setCreator(creator);
+            appointment.setAppointmentStatus(AppointmentStatus.Available);
+            Appointment saved = appointmentRepository.save(appointment);
+
+            customMessage = new CustomMessage(StringResoures.APPOINTMENT_CREATED,HttpStatus.OK,saved);
+        }
+
+        return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
+    }
 
     public ResponseEntity validateAndUpdateAppointment(Long appointmentId, Appointment appointment){
 
