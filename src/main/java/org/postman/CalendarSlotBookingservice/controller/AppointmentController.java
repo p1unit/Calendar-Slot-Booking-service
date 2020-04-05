@@ -44,16 +44,6 @@ public class AppointmentController {
         return appointmentService.findById(appointmentId);
     }
 
-    @GetMapping(path = EndPoints.APPOINTMENT_BETWEEN_DATES)
-    public ResponseEntity findByDateRange(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("startDate") LocalDate startDate,
-                                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") LocalDate endDate,
-                                            @Nullable @RequestParam("status") String status) {
-
-        return appointmentService.findByDateRangeWithStatus(startDate, endDate,status);
-    }
-
-
-
     @PutMapping(path = EndPoints.APPOINTMENT_UPDATE)
     public ResponseEntity update(@PathVariable Long appointmentId, @RequestBody Appointment appointment) {
         return appointmentService.update(appointmentId, appointment);
@@ -75,6 +65,14 @@ public class AppointmentController {
         return appointmentService.deleteById(appointmentId);
     }
 
+    @GetMapping(path = EndPoints.APPOINTMENT_BETWEEN_DATES)
+    public ResponseEntity findByDateRange(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("startDate") LocalDate startDate,
+                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") LocalDate endDate,
+                                          @Nullable @RequestParam("status") String status) {
+
+        return appointmentService.findByDateRangeWithStatus(startDate, endDate,status);
+    }
+
     @GetMapping(path = EndPoints.APPOINTMENT_AFTER_DATES)
     public ResponseEntity findByDateAfter(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("date") LocalDate date,
                                           @Nullable @RequestParam("status") String status) {
@@ -87,5 +85,27 @@ public class AppointmentController {
                                                         @Nullable @RequestParam("status") String status) {
 
         return appointmentService.findAllByAppointmentDateBefore(date,status);
+    }
+
+    @GetMapping(path = EndPoints.APPOINTMENT_BY_USER_BETWEEN_DATES)
+    public ResponseEntity findByUserAndDateRange(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("startDate") LocalDate startDate,
+                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") LocalDate endDate,
+                                          @Nullable @RequestParam("status") String status,@PathVariable("userId") Long userId) {
+
+        return appointmentService.findByUserAndDateRangeWithStatus(startDate, endDate,userId,status);
+    }
+
+    @GetMapping(path = EndPoints.APPOINTMENT_BY_AFTER_DATES)
+    public ResponseEntity findByUserAndDateAfter(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("date") LocalDate date,
+                                          @Nullable @RequestParam("status") String status, @PathVariable("userId") Long userId) {
+
+        return appointmentService.findAllByUserAndAppointmentDateAfter(date,userId,status);
+    }
+
+    @GetMapping(path = EndPoints.APPOINTMENT_BY_USER_BEFORE_DATES)
+    public ResponseEntity findAllByUserAndDateBefore(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("date") LocalDate date,
+                                              @Nullable @RequestParam("status") String status, @PathVariable("userId") Long userId) {
+
+        return appointmentService.findAllByUserAndAppointmentDateBefore(date,userId,status);
     }
 }

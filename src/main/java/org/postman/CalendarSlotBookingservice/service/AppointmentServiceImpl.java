@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -176,6 +176,84 @@ public class AppointmentServiceImpl implements AppointmentService {
                 break;
             case "all":
                 appointments = appointmentRepository.findAllByAppointmentDateBefore(startDate);
+                break;
+            default:
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage(StringResoures.INVALID_STATUS,HttpStatus.BAD_REQUEST));
+        }
+
+        CustomMessage customMessage=new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,appointments);
+        return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
+    }
+
+    @Override
+    public ResponseEntity findByUserAndDateRangeWithStatus(LocalDate startDate, LocalDate endDate, Long userId, String status) {
+
+        List<Appointment> appointments;
+        Optional<User> creator = userRepository.findById(userId);
+
+        creator.orElseThrow(() -> new UsernameNotFoundException(StringResoures.USER_NOT_FOUND + " " + userId ));
+
+        switch (status) {
+            case "booked":
+                appointments = appointmentRepository.findAllByCreatorAndAppointmentDateBetweenAndAppointmentStatus(creator.get(),startDate,endDate,AppointmentStatus.Booked);
+                break;
+            case "available":
+                appointments = appointmentRepository.findAllByCreatorAndAppointmentDateBetweenAndAppointmentStatus(creator.get(),startDate,endDate,AppointmentStatus.Available);
+                break;
+            case "all":
+                appointments = appointmentRepository.findAllByCreatorAndAppointmentDateBetween(creator.get(),startDate,endDate);
+                break;
+            default:
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage(StringResoures.INVALID_STATUS,HttpStatus.BAD_REQUEST));
+        }
+
+        CustomMessage customMessage=new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,appointments);
+        return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
+    }
+
+    @Override
+    public ResponseEntity findAllByUserAndAppointmentDateAfter(LocalDate date, Long userId, String status) {
+
+        List<Appointment> appointments;
+        Optional<User> creator = userRepository.findById(userId);
+
+        creator.orElseThrow(() -> new UsernameNotFoundException(StringResoures.USER_NOT_FOUND + " " + userId ));
+
+        switch (status) {
+            case "booked":
+                appointments = appointmentRepository.findAllByCreatorAndAppointmentDateAfterAndAppointmentStatus(creator.get(),date,AppointmentStatus.Booked);
+                break;
+            case "available":
+                appointments = appointmentRepository.findAllByCreatorAndAppointmentDateAfterAndAppointmentStatus(creator.get(),date,AppointmentStatus.Available);
+                break;
+            case "all":
+                appointments = appointmentRepository.findAllByCreatorAndAppointmentDateAfter(creator.get(),date);
+                break;
+            default:
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage(StringResoures.INVALID_STATUS,HttpStatus.BAD_REQUEST));
+        }
+
+        CustomMessage customMessage=new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,appointments);
+        return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
+    }
+
+    @Override
+    public ResponseEntity findAllByUserAndAppointmentDateBefore(LocalDate date, Long userId, String status) {
+
+        List<Appointment> appointments;
+        Optional<User> creator = userRepository.findById(userId);
+
+        creator.orElseThrow(() -> new UsernameNotFoundException(StringResoures.USER_NOT_FOUND + " " + userId ));
+
+        switch (status) {
+            case "booked":
+                appointments = appointmentRepository.findAllByCreatorAndAppointmentDateBeforeAndAppointmentStatus(creator.get(),date,AppointmentStatus.Booked);
+                break;
+            case "available":
+                appointments = appointmentRepository.findAllByCreatorAndAppointmentDateBeforeAndAppointmentStatus(creator.get(),date,AppointmentStatus.Available);
+                break;
+            case "all":
+                appointments = appointmentRepository.findAllByCreatorAndAppointmentDateBefore(creator.get(),date);
                 break;
             default:
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage(StringResoures.INVALID_STATUS,HttpStatus.BAD_REQUEST));

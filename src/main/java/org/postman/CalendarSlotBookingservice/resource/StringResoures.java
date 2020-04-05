@@ -22,6 +22,7 @@ public class StringResoures {
     public static final String VALUES_NOT_PRESENT = "Appointment date startTime and endTime required";
     public static final String APPOINTMENT_UPDATED = "Appointment updated";
     public static final String DATE_IS_IN_PAST = "Appointment date is in past";
+    public static final String USER_NOT_FOUND = "User not found";
 
 
 }

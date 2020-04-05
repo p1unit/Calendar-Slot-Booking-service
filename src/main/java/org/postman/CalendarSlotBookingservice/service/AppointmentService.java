@@ -30,5 +30,11 @@ public interface AppointmentService {
     ResponseEntity findAllByAppointmentDateAfter(LocalDate startDate, String status);
 
     ResponseEntity findAllByAppointmentDateBefore(LocalDate startDate, String status);
+
+    ResponseEntity findByUserAndDateRangeWithStatus(LocalDate startDate, LocalDate endDate, Long userId, String status);
+
+    ResponseEntity findAllByUserAndAppointmentDateAfter(LocalDate date, Long userId, String status);
+
+    ResponseEntity findAllByUserAndAppointmentDateBefore(LocalDate date, Long userId, String status);
 }
 
