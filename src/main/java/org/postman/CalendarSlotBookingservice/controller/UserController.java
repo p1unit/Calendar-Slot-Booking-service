@@ -60,7 +60,7 @@ public class UserController{
     public ResponseEntity user() {
 
         Optional<User> user = userRepository.findByUsername(securityService.findLoggedInUsername());
-        if(user.isEmpty()){
+        if(!user.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomMessage(StringResoures.USER_NOT_FOUND,HttpStatus.NOT_FOUND));
         }
 
@@ -70,7 +70,7 @@ public class UserController{
     @GetMapping(path = EndPoints.FIND_USER)
     public ResponseEntity findByUserID(@PathVariable("userId") Long userId) {
          Optional<User> user = userRepository.findById(userId);
-         if(user.isEmpty()){
+         if(!user.isPresent()){
              return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomMessage(StringResoures.USER_NOT_FOUND,HttpStatus.NOT_FOUND));
          }
 

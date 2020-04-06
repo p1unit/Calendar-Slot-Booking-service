@@ -49,7 +49,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public ResponseEntity findById(Long appointmentId) {
         Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
 
-        if(appointment.isEmpty()){
+        if(!appointment.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomMessage(StringResoures.NOT_PRESENT,HttpStatus.NOT_FOUND));
         }
 
