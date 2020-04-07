@@ -1,12 +1,49 @@
 ## Calendar Appointment Booking System
 
+A Basic Calendar Slot Booking service which allows people to define their available slots on a day and other people to book them.
+
+### Build with
+* [Spring Boot](https://spring.io/projects/spring-boot)
+* [Maven](https://maven.apache.org/)
+* [JDk](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [MySQL](https://www.mysql.com/)
+* [Git](https://git-scm.com/)
+
+### External Tools Used
+* [Postman](https://www.getpostman.com/)
+* [Heroku](https://www.heroku.com/)
+
+### Running the application
+
+**To Run as a Spring Boot application**
+
+Using Maven plugin: 
+
+1. mvn clean spring-boot:run
+
+Using Jar file: 
+
+1. mvn clean package
+
+2. java -jar ./target/CalendarSlotBookingservice-0.0.1-SNAPSHOT.jar
+
+**To Run using Docker file**
+
+1. mvn clean package
+
+2. Build the Docker image : docker build -t appointment-booking-docker .
+
+3. Run the Spring Boot application : docker run -p 8080:8080 appointment-booking-docker.
+_ _ _
+
+## REST Endpoints
+
 Base Url = [https://calendar-appointment-booking.herokuapp.com/](https://calendar-appointment-booking.herokuapp.com/)
 
 API Version = api/v1
 
 Complete Url = [https://calendar-appointment-booking.herokuapp.com/api/v1](https://calendar-appointment-booking.herokuapp.com/api/v1)
 
-## REST Endpoints
 
 ### Registration
 
@@ -185,7 +222,76 @@ Sample Request Body
 ```
 Sample Response Body
 ```javascript
-	to be updated
+	[
+        {
+            "message": "Appointment created",
+            "status": "OK",
+            "response": {
+                "id": 12,
+                "createdAt": "2020-04-07T11:16:15.560+0000",
+                "appointmentDate": "2020-04-08",
+                "appointmentStartTime": "01:00:00",
+                "appointmentEndTime": "02:00:00",
+                "appointmentStatus": "available",
+                "creator": {
+                    "id": 6,
+                    "username": "sample@gmail.com",
+                    "name": "Sample"
+                }
+            }
+        },
+        {
+            "message": "Appointment created",
+            "status": "OK",
+            "response": {
+                "id": 13,
+                "createdAt": "2020-04-07T11:16:15.765+0000",
+                "appointmentDate": "2020-04-08",
+                "appointmentStartTime": "03:00:00",
+                "appointmentEndTime": "05:00:00",
+                "appointmentStatus": "available",
+                "creator": {
+                    "id": 6,
+                    "username": "sample@gmail.com",
+                    "name": "Sample"
+                }
+            }
+        },
+        {
+            "message": "Appointment created",
+            "status": "OK",
+            "response": {
+                "id": 14,
+                "createdAt": "2020-04-07T11:16:15.801+0000",
+                "appointmentDate": "2020-04-08",
+                "appointmentStartTime": "07:00:00",
+                "appointmentEndTime": "08:00:00",
+                "appointmentStatus": "available",
+                "creator": {
+                    "id": 6,
+                    "username": "sample@gmail.com",
+                    "name": "Sample"
+                }
+            }
+        },
+        {
+            "message": "Appointment created",
+            "status": "OK",
+            "response": {
+                "id": 15,
+                "createdAt": "2020-04-07T11:16:15.842+0000",
+                "appointmentDate": "2020-04-08",
+                "appointmentStartTime": "10:00:00",
+                "appointmentEndTime": "11:00:00",
+                "appointmentStatus": "available",
+                "creator": {
+                    "id": 6,
+                    "username": "sample@gmail.com",
+                    "name": "Sample"
+                }
+            }
+        }
+    ]
 ```
 _ _ _
 ### All Appointment
