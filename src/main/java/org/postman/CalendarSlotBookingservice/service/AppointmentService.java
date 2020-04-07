@@ -3,6 +3,7 @@ package org.postman.CalendarSlotBookingservice.service;
 import org.postman.CalendarSlotBookingservice.exceptions.CustomMessage;
 import org.postman.CalendarSlotBookingservice.exceptions.ResourceNotFoundException;
 import org.postman.CalendarSlotBookingservice.model.Appointment;
+import org.postman.CalendarSlotBookingservice.model.BatchAppointment;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
@@ -36,5 +37,7 @@ public interface AppointmentService {
     ResponseEntity findAllByUserAndAppointmentDateAfter(LocalDate date, Long userId, String status);
 
     ResponseEntity findAllByUserAndAppointmentDateBefore(LocalDate date, Long userId, String status);
+
+    ResponseEntity createBatchAppointment(BatchAppointment batchAppointment);
 }
 

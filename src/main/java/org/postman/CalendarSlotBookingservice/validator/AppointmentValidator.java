@@ -30,7 +30,7 @@ public class AppointmentValidator {
     @Autowired
     UserRepository userRepository;
 
-    public ResponseEntity validateAndCreate(Appointment appointment)  {
+    public CustomMessage validateAndCreate(Appointment appointment)  {
 
         CustomMessage customMessage;
         User creator =  userRepository.findByUsername(securityService.findLoggedInUsername()).get();
@@ -61,7 +61,7 @@ public class AppointmentValidator {
             customMessage = new CustomMessage(StringResoures.APPOINTMENT_CREATED,HttpStatus.OK,saved);
         }
 
-        return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
+        return customMessage;
     }
 
     public ResponseEntity validateAndUpdateAppointment(Long appointmentId, Appointment appointment){
@@ -78,12 +78,12 @@ public class AppointmentValidator {
 
             }else if (! existingAppointment.get().getCreator().getUsername().equals(loggedInUsername) ) {
 
-                customMessage = new CustomMessage(StringResoures.PERMISSION_DENIED, HttpStatus.UNAUTHORIZED);
+                customMessage = new CustomMessage(StringResoures.PERMISSION_DENIED, HttpStatus.OK);
 
             }else if(appointment.getAppointmentEndTime() == null ||
                     appointment.getAppointmentStartTime() == null || appointment.getAppointmentDate() ==null ){
 
-                customMessage = new CustomMessage(StringResoures.VALUES_NOT_PRESENT, HttpStatus.OK);
+                customMessage = new CustomMessage(StringResoures.VALUES_NOT_PRESENT, HttpStatus.NO_CONTENT);
 
             }else if(!appointment.getAppointmentDate().isAfter(LocalDate.now())){
 
@@ -103,8 +103,8 @@ public class AppointmentValidator {
             return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body
-                (new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT,HttpStatus.NOT_FOUND));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body
+                (new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT,HttpStatus.NO_CONTENT));
 
     }
 

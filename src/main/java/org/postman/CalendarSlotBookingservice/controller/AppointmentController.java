@@ -5,6 +5,7 @@ import org.apache.coyote.Response;
 import org.postman.CalendarSlotBookingservice.exceptions.CustomMessage;
 import org.postman.CalendarSlotBookingservice.exceptions.ResourceNotFoundException;
 import org.postman.CalendarSlotBookingservice.model.Appointment;
+import org.postman.CalendarSlotBookingservice.model.BatchAppointment;
 import org.postman.CalendarSlotBookingservice.resource.EndPoints;
 import org.postman.CalendarSlotBookingservice.resource.StringResoures;
 import org.postman.CalendarSlotBookingservice.service.AppointmentService;
@@ -37,6 +38,11 @@ public class AppointmentController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity create(@Valid @RequestBody Appointment appointment) throws ResourceNotFoundException {
         return appointmentService.create(appointment);
+    }
+
+    @PostMapping(path = EndPoints.BATCH_APPOINTMENT_CREATE)
+    public ResponseEntity createBatch(@Valid @RequestBody BatchAppointment appointments) throws ResourceNotFoundException {
+        return appointmentService.createBatchAppointment(appointments);
     }
 
     @GetMapping(path = EndPoints.APPOINTMENT_BY_ID)

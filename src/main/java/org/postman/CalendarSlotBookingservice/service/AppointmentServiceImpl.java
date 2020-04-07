@@ -5,6 +5,7 @@ import org.postman.CalendarSlotBookingservice.exceptions.CustomMessage;
 import org.postman.CalendarSlotBookingservice.exceptions.ResourceNotFoundException;
 import org.postman.CalendarSlotBookingservice.model.Appointment;
 import org.postman.CalendarSlotBookingservice.model.AppointmentStatus;
+import org.postman.CalendarSlotBookingservice.model.BatchAppointment;
 import org.postman.CalendarSlotBookingservice.model.User;
 import org.postman.CalendarSlotBookingservice.repository.AppointmentRepository;
 import org.postman.CalendarSlotBookingservice.repository.UserRepository;
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +52,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
 
         if(!appointment.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomMessage(StringResoures.NOT_PRESENT,HttpStatus.NOT_FOUND));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new CustomMessage(StringResoures.NOT_PRESENT,HttpStatus.NO_CONTENT));
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,appointment.get()));
@@ -65,7 +67,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public ResponseEntity create(Appointment appointment)  {
 
-        return appointmentValidator.validateAndCreate(appointment);
+        CustomMessage message = appointmentValidator.validateAndCreate(appointment);
+        return ResponseEntity.status(message.getStatus()).body(message);
     }
 
 
@@ -90,10 +93,10 @@ public class AppointmentServiceImpl implements AppointmentService {
                  return ResponseEntity.ok(customMessage);
             }
             customMessage = new CustomMessage(StringResoures.PERMISSION_DENIED, HttpStatus.OK);
-            return ResponseEntity.badRequest().body(customMessage);
+            return ResponseEntity.ok().body(customMessage);
         }
 
-        customMessage = new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT, HttpStatus.NOT_FOUND);
+        customMessage = new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT, HttpStatus.NO_CONTENT);
         return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
     }
 
@@ -255,5 +258,27 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         CustomMessage customMessage=new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,appointments);
         return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
+    }
+
+    private CustomMessage batchCreator(Appointment appointment){
+        return appointmentValidator.validateAndCreate(appointment);
+    }
+
+    @Override
+    public ResponseEntity createBatchAppointment(BatchAppointment batchAppointment){
+
+        ArrayList<CustomMessage> customMessage = new ArrayList<>();
+
+        batchAppointment.getAppointmentSlots().forEach(appointmentSlot -> {
+
+            Appointment appointment = new Appointment();
+            appointment.setAppointmentDate(batchAppointment.getAppointmentDate());
+            appointment.setAppointmentStartTime(appointmentSlot.getAppointmentStartTime());
+            appointment.setAppointmentEndTime(appointmentSlot.getAppointmentEndTime());
+
+            customMessage.add(batchCreator(appointment));
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(customMessage);
     }
 }

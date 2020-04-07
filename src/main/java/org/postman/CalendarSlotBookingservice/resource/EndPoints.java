@@ -27,4 +27,5 @@ public class EndPoints {
     public static final String APPOINTMENT_BY_USER_BETWEEN_DATES = "/all/betweenDate/{userId}";
     public static final String APPOINTMENT_BY_USER_BEFORE_DATES = "/all/beforeDate/{userId}";
     public static final String APPOINTMENT_BY_AFTER_DATES = "/all/afterDate/{userId}";
+    public static final String BATCH_APPOINTMENT_CREATE = "/createBatch";
 }

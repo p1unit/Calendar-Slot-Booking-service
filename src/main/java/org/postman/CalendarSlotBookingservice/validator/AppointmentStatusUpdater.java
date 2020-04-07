@@ -50,7 +50,7 @@ public class AppointmentStatusUpdater {
             }else if (! existingAppointment.get().getCreator().getUsername().equals(loggedInUsername)
                     && ! existingAppointment.get().getBookerEmail().equals(loggedInUsername)) {
 
-                customMessage = new CustomMessage(StringResoures.PERMISSION_DENIED, HttpStatus.UNAUTHORIZED);
+                customMessage = new CustomMessage(StringResoures.PERMISSION_DENIED, HttpStatus.OK);
 
             }else {
 
@@ -66,8 +66,8 @@ public class AppointmentStatusUpdater {
             return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body
-                (new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT,HttpStatus.NOT_FOUND));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body
+                (new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT,HttpStatus.NO_CONTENT));
     }
 
 
@@ -110,8 +110,8 @@ public class AppointmentStatusUpdater {
             return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body
-                (new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT,HttpStatus.NOT_FOUND));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body
+                (new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT,HttpStatus.NO_CONTENT));
 
     }
 

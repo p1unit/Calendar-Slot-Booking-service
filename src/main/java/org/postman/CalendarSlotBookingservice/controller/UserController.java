@@ -61,7 +61,7 @@ public class UserController{
 
         Optional<User> user = userRepository.findByUsername(securityService.findLoggedInUsername());
         if(!user.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomMessage(StringResoures.USER_NOT_FOUND,HttpStatus.NOT_FOUND));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new CustomMessage(StringResoures.USER_NOT_FOUND,HttpStatus.NO_CONTENT));
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,user.get()));
@@ -71,7 +71,7 @@ public class UserController{
     public ResponseEntity findByUserID(@PathVariable("userId") Long userId) {
          Optional<User> user = userRepository.findById(userId);
          if(!user.isPresent()){
-             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomMessage(StringResoures.USER_NOT_FOUND,HttpStatus.NOT_FOUND));
+             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new CustomMessage(StringResoures.USER_NOT_FOUND,HttpStatus.NO_CONTENT));
          }
 
         return ResponseEntity.status(HttpStatus.OK).body(new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,user.get()));
@@ -90,7 +90,7 @@ public class UserController{
                     .getAllErrors()
                     .forEach(f -> errors.add(f.getCode() + ": " + f.getDefaultMessage()));
 
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new CustomMessage("Multiple Errors",HttpStatus.FORBIDDEN,errors));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new CustomMessage("Multiple Errors",HttpStatus.NOT_ACCEPTABLE,errors));
 
         }
 
