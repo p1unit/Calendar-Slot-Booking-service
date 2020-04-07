@@ -13,8 +13,6 @@ public class CalendarSlotBookingserviceApplication {
 
 	public static void main(String[] args) {
 
-		System.out.println("Variable " + System.getenv("DATABASE_PATH"));
-
 		Properties properties = new Properties();
 		properties.put("server.port", 9999);
 
@@ -26,9 +24,9 @@ public class CalendarSlotBookingserviceApplication {
 
 	private static Properties props() {
 		Properties properties = new Properties();
-		properties.put("spring.datasource.url",System.getenv("DATABASE_PATH"));
-		properties.put("spring.datasource.username",System.getenv("USER"));
-		properties.put("spring.datasource.password",System.getenv("PASSWORD"));
+		properties.put("spring.datasource.url","jdbc:mysql://localhost:3306/springsecurity");
+		properties.put("spring.datasource.username","punee");
+		properties.put("spring.datasource.password","punee901@A");
 		return properties;
 	}
 

@@ -3,6 +3,10 @@ package org.postman.CalendarSlotBookingservice.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedBy;
@@ -18,111 +22,51 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-//@EntityListeners(AuditingEntityListener.class)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "appointment")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
 public class Appointment implements Serializable {
 
+    @ApiModelProperty(notes = "appointment Id")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "appointment_id")
     private long id;
 
+    @ApiModelProperty(notes = "timestamp of the creation of the appointment")
     private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
 
+    @ApiModelProperty(notes = "appointment Date")
     @Column(nullable = false)
     private LocalDate appointmentDate;
 
+    @ApiModelProperty(notes = "appointment  slot start time")
     @Column(nullable = false)
     private Time appointmentStartTime;
 
+    @ApiModelProperty(notes = "appointment  slot end time")
     @Column(nullable = false)
     private Time appointmentEndTime;
 
+    @ApiModelProperty(notes = "appointment status booked / available")
     @Enumerated(EnumType.STRING)
     private AppointmentStatus appointmentStatus;
 
+    @ApiModelProperty(notes = "appointment  creator user info")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name =  "user_id" ,nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User creator;
 
+    @ApiModelProperty(notes = "appointment booker user info")
     private String bookedBy;
 
+    @ApiModelProperty(notes = "appointment booker email info")
     @Email
     private String bookerEmail;
 
-    public long getId() {
-        return id;
     }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDate getAppointmentDate() {
-        return appointmentDate;
-    }
-
-    public void setAppointmentDate(LocalDate appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
-
-    public Time getAppointmentStartTime() {
-        return appointmentStartTime;
-    }
-
-    public void setAppointmentStartTime(Time appointmentStartTime) {
-        this.appointmentStartTime = appointmentStartTime;
-    }
-
-    public Time getAppointmentEndTime() {
-        return appointmentEndTime;
-    }
-
-    public void setAppointmentEndTime(Time appointmentEndTime) {
-        this.appointmentEndTime = appointmentEndTime;
-    }
-
-    public AppointmentStatus getAppointmentStatus() {
-        return appointmentStatus;
-    }
-
-    public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
-        this.appointmentStatus = appointmentStatus;
-    }
-
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
-
-    public String getBookedBy() {
-        return bookedBy;
-    }
-
-    public void setBookedBy(String bookedBy) {
-        this.bookedBy = bookedBy;
-    }
-
-    public String getBookerEmail() {
-        return bookerEmail;
-    }
-
-    public void setBookerEmail(String bookerEmail) {
-        this.bookerEmail = bookerEmail;
-    }
-}
