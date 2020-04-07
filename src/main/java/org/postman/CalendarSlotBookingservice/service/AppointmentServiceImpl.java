@@ -68,6 +68,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public ResponseEntity create(Appointment appointment)  {
 
         CustomMessage message = appointmentValidator.validateAndCreate(appointment);
+        logger.info("Appointment Created : "+message);
         return ResponseEntity.status(message.getStatus()).body(message);
     }
 
@@ -119,6 +120,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 appointments = appointmentRepository.findAllByAppointmentDateBetween(startDate, endDate);
                 break;
             default:
+                logger.info("findByDateRangeWithStatus : "+startDate+" "+endDate+" "+status);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage(StringResoures.INVALID_STATUS,HttpStatus.BAD_REQUEST));
         }
 
@@ -152,6 +154,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 appointments = appointmentRepository.findAllByAppointmentDateAfter(startDate);
                 break;
             default:
+                logger.info("findAllByAppointmentDateAfter : "+startDate+" "+status);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage(StringResoures.INVALID_STATUS,HttpStatus.BAD_REQUEST));
         }
 
@@ -175,6 +178,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 appointments = appointmentRepository.findAllByAppointmentDateBefore(startDate);
                 break;
             default:
+                logger.info("findAllByAppointmentDateBefore : "+startDate+" "+status);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage(StringResoures.INVALID_STATUS,HttpStatus.BAD_REQUEST));
         }
 
@@ -201,6 +205,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 appointments = appointmentRepository.findAllByCreatorAndAppointmentDateBetween(creator.get(),startDate,endDate);
                 break;
             default:
+                logger.info("findAllByAppointmentDateBefore : "+startDate+" "+endDate+" "+status);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage(StringResoures.INVALID_STATUS,HttpStatus.BAD_REQUEST));
         }
 
@@ -227,6 +232,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 appointments = appointmentRepository.findAllByCreatorAndAppointmentDateAfter(creator.get(),date);
                 break;
             default:
+                logger.info("findAllByAppointmentDateBefore : "+date+" "+status);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage(StringResoures.INVALID_STATUS,HttpStatus.BAD_REQUEST));
         }
 

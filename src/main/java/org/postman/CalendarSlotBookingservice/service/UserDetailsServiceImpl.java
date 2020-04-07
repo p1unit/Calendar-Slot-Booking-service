@@ -35,21 +35,11 @@ public class UserDetailsServiceImpl implements UserDetailsService, SecurityServi
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 
         Optional<User> user =  userRepository.findByUsername(userEmail);
-
         user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userEmail));
-
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-//        for (Role role : user.get().getRoles()){
-//            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-//        }
-
         grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
 
-//        return new org.springframework.security.core.userdetails.User(user.get().getUserName(),
-//                user.get().getPassword(),grantedAuthorities);
-
-//        System.out.println(user.get().getUsername()+" "+userEmail);
-
+//        logger.debug(user.get().getUsername()+" "+userEmail);
         return new org.springframework.security.core.userdetails.User(user.get().getUsername(),user.get().getPassword(), grantedAuthorities);
     }
 
@@ -60,20 +50,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, SecurityServi
         if (userDetails instanceof UserDetails) {
             return ((UserDetails)userDetails).getUsername();
         }
-
+//        logger.debug("Logged In Username:"+userDetails);
         return null;
     }
-
-//    @Override
-//    public void autoLogin(String username, String password) {
-//        UserDetails userDetails = loadUserByUsername(username);
-//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-//
-//        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-//
-//        if (usernamePasswordAuthenticationToken.isAuthenticated()) {
-//            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-//            logger.debug(String.format("Auto login %s successfully!", username));
-//        }
-//    }
 }

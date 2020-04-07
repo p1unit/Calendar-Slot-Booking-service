@@ -13,8 +13,6 @@ public class CalendarSlotBookingserviceApplication {
 
 	public static void main(String[] args) {
 
-		System.out.println("Variable " + System.getenv("DATABASE_PATH"));
-
 		Properties properties = new Properties();
 		properties.put("server.port", 9999);
 

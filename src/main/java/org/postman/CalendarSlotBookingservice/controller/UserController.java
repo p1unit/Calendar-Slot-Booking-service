@@ -1,5 +1,7 @@
 package org.postman.CalendarSlotBookingservice.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.postman.CalendarSlotBookingservice.exceptions.CustomMessage;
 import org.postman.CalendarSlotBookingservice.model.User;
 import org.postman.CalendarSlotBookingservice.repository.SecurityService;
@@ -33,6 +35,7 @@ import java.util.Optional;
 
 @RequestMapping(EndPoints.API_VERSION+EndPoints.USER_BASE)
 @RestController
+@Api(value = "User and Authentication End Points")
 public class UserController{
 
     @Autowired
@@ -47,15 +50,14 @@ public class UserController{
     @Autowired
     SecurityServiceImpl securityService;
 
-//    @Autowired
-//    SecurityServiceImpl securityService;
-
+    @ApiOperation(value = "User Home ")
     @GetMapping(path = EndPoints.USER_HOME)
     public CustomMessage home() {
 
         return new CustomMessage("Welcome in the Appointment booking system",HttpStatus.OK);
     }
 
+    @ApiOperation(value = "return Current User")
     @GetMapping(path = EndPoints.CURRENT_USER)
     public ResponseEntity user() {
 
@@ -67,6 +69,7 @@ public class UserController{
         return ResponseEntity.status(HttpStatus.OK).body(new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,user.get()));
     }
 
+    @ApiOperation(value = "return Current User by UserId")
     @GetMapping(path = EndPoints.FIND_USER)
     public ResponseEntity findByUserID(@PathVariable("userId") Long userId) {
          Optional<User> user = userRepository.findById(userId);
@@ -77,8 +80,7 @@ public class UserController{
         return ResponseEntity.status(HttpStatus.OK).body(new CustomMessage(StringResoures.OPERATION_SUCCESSFUL,HttpStatus.OK,user.get()));
     }
 
-
-
+    @ApiOperation(value = "Create new user")
     @PostMapping(path = EndPoints.REGISTER_USER)
     public ResponseEntity<CustomMessage> register(@Valid @RequestBody User user, BindingResult bindingResult) {
 
@@ -99,6 +101,7 @@ public class UserController{
         return ResponseEntity.status(HttpStatus.CREATED).body(new CustomMessage(StringResoures.USER_CREATED,HttpStatus.CREATED,createdUser));
     }
 
+    @ApiOperation(value = "logout current user")
     @GetMapping(path = EndPoints.LOG_OUT)
     public ResponseEntity logout(){
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
