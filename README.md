@@ -8,6 +8,7 @@ A Basic Calendar Slot Booking service which allows people to define their availa
 * [JDk](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [MySQL](https://www.mysql.com/)
 * [Git](https://git-scm.com/)
+* [swagger](https://swagger.io/)
 
 ### External Tools Used
 * [Postman](https://www.getpostman.com/)
@@ -37,6 +38,8 @@ Using Jar file:
 _ _ _
 
 ## REST Endpoints
+
+**Swagger documentation** - [https://calendar-appointment-booking.herokuapp.com/swagger-ui.html](https://calendar-appointment-booking.herokuapp.com/swagger-ui.html)
 
 Base Url = [https://calendar-appointment-booking.herokuapp.com/](https://calendar-appointment-booking.herokuapp.com/)
 
