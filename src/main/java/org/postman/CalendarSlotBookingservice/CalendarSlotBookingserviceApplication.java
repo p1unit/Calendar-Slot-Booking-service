@@ -24,9 +24,9 @@ public class CalendarSlotBookingserviceApplication {
 
 	private static Properties props() {
 		Properties properties = new Properties();
-		properties.put("spring.datasource.url","jdbc:mysql://localhost:3306/springsecurity");
-		properties.put("spring.datasource.username","punee");
-		properties.put("spring.datasource.password","punee901@A");
+		properties.put("spring.datasource.url",System.getenv("DATABASE_PATH"));
+		properties.put("spring.datasource.username",System.getenv("USER"));
+		properties.put("spring.datasource.password",System.getenv("PASSWORD"));
 		return properties;
 	}
 

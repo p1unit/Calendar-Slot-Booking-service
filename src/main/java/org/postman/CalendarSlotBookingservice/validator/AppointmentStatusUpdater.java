@@ -8,6 +8,8 @@ import org.postman.CalendarSlotBookingservice.repository.AppointmentRepository;
 import org.postman.CalendarSlotBookingservice.repository.UserRepository;
 import org.postman.CalendarSlotBookingservice.resource.StringResoures;
 import org.postman.CalendarSlotBookingservice.service.SecurityServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,8 @@ import java.util.*;
 
 @Component
 public class AppointmentStatusUpdater {
+
+    private static final Logger logger = LoggerFactory.getLogger(AppointmentStatusUpdater.class);
 
     @Autowired
     SecurityServiceImpl securityService;
@@ -66,6 +70,8 @@ public class AppointmentStatusUpdater {
             return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
         }
 
+        logger.info("validateAndCancel : "+StringResoures.APPOINTMENT_NOT_PRESENT+" "+appointmentId);
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body
                 (new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT,HttpStatus.NO_CONTENT));
     }
@@ -109,6 +115,8 @@ public class AppointmentStatusUpdater {
 
             return ResponseEntity.status(customMessage.getStatus()).body(customMessage);
         }
+
+        logger.info("validateAndBook : "+StringResoures.APPOINTMENT_NOT_PRESENT+" "+appointmentId);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body
                 (new CustomMessage(StringResoures.APPOINTMENT_NOT_PRESENT,HttpStatus.NO_CONTENT));
